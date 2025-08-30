@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FeverCare - Your 10 Minute Fever Guide</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f9ff;
+      color: #333;
+    }
+    header {
+      background: #0077cc;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #005fa3;
+    }
+    nav a {
+      color: white;
+      padding: 12px 20px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      background: #004a80;
+    }
+    .container {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.01);
+    }
+    select {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #e9f5ff;
+      border-left: 5px solid #0077cc;
+      border-radius: 8px;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #0077cc;
+      color: white;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌡 FeverCare</h1>
+    <p>Your 10-Minute Guide for Fever Relief</p>
+  </header>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#guide">Fever Guide</a>
+    <a href="#tos">Terms of Service</a>
+    <a href="#about">About</a>
+  </nav>
+
+  <div class="container" id="home">
+    <div class="card">
+      <h2>Welcome to FeverCare!</h2>
+      <p>This app helps you quickly identify fever symptoms and provides step-by-step guidance on remedies, medicines, and when to consult a doctor.</p>
+    </div>
+  </div>
+
+  <div class="container" id="guide">
+    <div class="card">
+      <h2>Fever Guide</h2>
+      <p>Select your fever type to see treatment guidance:</p>
+      <select id="feverSelect">
+        <option value="">-- Choose Fever Type --</option>
+        <option value="viral">Viral Fever</option>
+        <option value="malaria">Malaria</option>
+        <option value="typhoid">Typhoid</option>
+        <option value="dengue">Dengue</option>
+        <option value="covid">COVID-19</option>
+        <option value="flu">Seasonal Flu</option>
+        <option value="heat">Heat Fever</option>
+        <option value="sinus">Sinus Fever</option>
+      </select>
+
+      <div id="result" class="result" style="display:none;"></div>
+    </div>
+  </div>
+
+  <div class="container" id="tos">
+    <div class="card">
+      <h2>Terms of Service</h2>
+      <p>⚠️ This guide is for informational purposes only and does not replace professional medical advice. Always consult a certified doctor if symptoms worsen or persist.</p>
+      <ul>
+        <li>Do not self-medicate excessively.</li>
+        <li>Follow dosage instructions strictly.</li>
+        <li>This guide is not responsible for misuse of information.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container" id="about">
+    <div class="card">
+      <h2>About FeverCare</h2>
+      <p>FeverCare was built as a lightweight healthcare app to provide fast, accessible, and reliable fever treatment guides in under 10 minutes.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 FeverCare. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const feverData = {
+      viral: {
+        name: "Viral Fever",
+        symptoms: "High temperature, body ache, fatigue.",
+        cure: "Rest, hydration, paracetamol for fever.",
+        medicine: "Paracetamol 500mg every 6-8 hours (if needed)."
+      },
+      malaria: {
+        name: "Malaria",
+        symptoms: "Fever with chills, sweating, headache.",
+        cure: "Antimalarial drugs (consult doctor).",
+        medicine: "Chloroquine/Artemisinin as prescribed."
+      },
+      typhoid: {
+        name: "Typhoid",
+        symptoms: "Prolonged fever, stomach pain, weakness.",
+        cure: "Antibiotics (strictly by doctor).",
+        medicine: "Cefixime/Azithromycin (only with prescription)."
+      },
+      dengue: {
+        name: "Dengue",
+        symptoms: "High fever, joint pain, rash, low platelets.",
+        cure: "Paracetamol, hydration, avoid aspirin.",
+        medicine: "Paracetamol only, hospital if platelets drop."
+      },
+      covid: {
+        name: "COVID-19",
+        symptoms: "Cough, fever, shortness of breath.",
+        cure: "Isolation, rest, steam inhalation.",
+        medicine: "Paracetamol, Vitamin C, consult doctor."
+      },
+      flu: {
+        name: "Seasonal Flu",
+        symptoms: "Runny nose, fever, sore throat.",
+        cure: "Rest, warm fluids, mild medicines.",
+        medicine: "Paracetamol, antihistamines if required."
+      },
+      heat: {
+        name: "Heat Fever",
+        symptoms: "High temperature after sun exposure, dizziness.",
+        cure: "Cool environment, oral rehydration, rest.",
+        medicine: "ORS, paracetamol if fever persists."
+      },
+      sinus: {
+        name: "Sinus Fever",
+        symptoms: "Headache, blocked nose, mild fever.",
+        cure: "Steam inhalation, hydration, rest.",
+        medicine: "Paracetamol, decongestants."
+      }
+    };
+
+    document.getElementById("feverSelect").addEventListener("change", function() {
+      let feverType = this.value;
+      let resultBox = document.getElementById("result");
+      if(feverType && feverData[feverType]) {
+        let data = feverData[feverType];
+        resultBox.innerHTML = `
+          <h3>${data.name}</h3>
+          <p><strong>Symptoms:</strong> ${data.symptoms}</p>
+          <p><strong>Cure:</strong> ${data.cure}</p>
+          <p><strong>Medicine Guide:</strong> ${data.medicine}</p>
+          <p><em>⚠️ Always consult a doctor for persistent or severe symptoms.</em></p>
+        `;
+        resultBox.style.display = "block";
+      } else {
+        resultBox.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
