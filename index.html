@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HealthCare+ Fever Guide</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+      font-size: 1.8em;
+      font-weight: bold;
+    }
+    main {
+      padding: 20px;
+    }
+    .card {
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+    .btn {
+      background: #2575fc;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+    .btn:hover {
+      background: #6a11cb;
+    }
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      background: #2c2c2c;
+      color: #fff;
+      font-size: 1em;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9em;
+      background: #1c1c1c;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>HealthCare+ Fever & Medicine Guide</header>
+  <main>
+    <div class="card" id="detailsForm">
+      <h2>Fill Your Details</h2>
+      <input type="text" id="name" placeholder="Enter your name" required>
+      <input type="number" id="age" placeholder="Enter your age" required>
+      <button class="btn" onclick="saveDetails()">Submit</button>
+    </div>
+
+    <div class="card" id="feverGuide" style="display:none;">
+      <h2>Select Your Fever</h2>
+      <select id="feverSelect">
+        <option value="">--Choose Fever--</option>
+        <option value="dengue">Dengue Fever</option>
+        <option value="malaria">Malaria</option>
+        <option value="typhoid">Typhoid Fever</option>
+        <option value="viral">Viral Fever</option>
+        <option value="flu">Seasonal Flu</option>
+        <option value="covid">COVID-19</option>
+        <option value="yellow">Yellow Fever</option>
+        <option value="chikungunya">Chikungunya</option>
+      </select>
+      <button class="btn" onclick="showGuide()">Get Guide</button>
+
+      <div id="guideOutput" style="margin-top:20px;"></div>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 HealthCare+ | <a href="#" style="color:#2575fc;">Terms of Service</a>
+  </footer>
+
+  <script>
+    function saveDetails() {
+      const name = document.getElementById('name').value;
+      const age = document.getElementById('age').value;
+      if (name && age) {
+        localStorage.setItem('userName', name);
+        localStorage.setItem('userAge', age);
+        document.getElementById('detailsForm').style.display = 'none';
+        document.getElementById('feverGuide').style.display = 'block';
+        alert(`Welcome ${name}! Please select your fever type.`);
+      } else {
+        alert('Please fill in all details.');
+      }
+    }
+
+    const guides = {
+      dengue: "Stay hydrated, rest well, and use paracetamol for fever. Avoid aspirin. If bleeding or severe symptoms occur, seek immediate medical attention.",
+      malaria: "Antimalarial medicines like Chloroquine or Artemisinin Combination Therapy (ACT). Use mosquito nets and stay hydrated.",
+      typhoid: "Antibiotics (as prescribed), plenty of fluids, and light diet. Avoid raw foods and ensure safe drinking water.",
+      viral: "Usually self-limiting. Rest, fluids, and paracetamol. Avoid unnecessary antibiotics.",
+      flu: "Rest, hydration, antiviral medications if prescribed. Use paracetamol for fever and body ache.",
+      covid: "Isolate, rest, stay hydrated. Paracetamol for fever. Seek urgent care if breathing difficulty occurs.",
+      yellow: "No direct cure. Supportive care with rest, hydration, and fever management. Vaccination is preventive.",
+      chikungunya: "Pain relievers, hydration, and rest. Avoid aspirin. Use mosquito control measures."
+    };
+
+    function showGuide() {
+      const fever = document.getElementById('feverSelect').value;
+      const output = document.getElementById('guideOutput');
+      if (fever && guides[fever]) {
+        output.innerHTML = `<h3>Guide for ${fever.toUpperCase()}:</h3><p>${guides[fever]}</p>`;
+        notifyUser(fever);
+      } else {
+        output.innerHTML = '<p>Please select a valid fever type.</p>';
+      }
+    }
+
+    function notifyUser(fever) {
+      if (Notification.permission === "granted") {
+        new Notification(`Healthcare+ Reminder`, {
+          body: `Remember to follow your ${fever} care guide. Stay safe!`
+        });
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            new Notification(`Healthcare+ Reminder`, {
+              body: `Remember to follow your ${fever} care guide. Stay safe!`
+            });
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>
